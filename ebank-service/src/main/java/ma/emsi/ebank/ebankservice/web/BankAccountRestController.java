@@ -1,5 +1,6 @@
 package ma.emsi.ebank.ebankservice.web;
 
+import ma.emsi.ebank.ebankservice.clients.CustomerRestClient;
 import ma.emsi.ebank.ebankservice.entities.BankAccount;
 import ma.emsi.ebank.ebankservice.repositories.BankAccountRepository;
 import org.springframework.web.bind.annotation.*;
@@ -13,20 +14,27 @@ import java.util.UUID;
 public class BankAccountRestController {
 
     private final BankAccountRepository bankAccountRepository;
+    private final CustomerRestClient customerRestClient;
 
-    public BankAccountRestController(BankAccountRepository bankAccountRepository) {
+    public BankAccountRestController(BankAccountRepository bankAccountRepository,
+                                     CustomerRestClient customerRestClient) {
         this.bankAccountRepository = bankAccountRepository;
+        this.customerRestClient = customerRestClient;
     }
 
     @GetMapping
     public List<BankAccount> accounts() {
-        return bankAccountRepository.findAll();
+        List<BankAccount> accounts = bankAccountRepository.findAll();
+        accounts.forEach(a -> a.setCustomer(customerRestClient.findCustomerById(a.getCustomerId())));
+        return accounts;
     }
 
     @GetMapping("/{accountId}")
     public BankAccount accountById(@PathVariable String accountId) {
-        return bankAccountRepository.findById(accountId)
+        BankAccount account = bankAccountRepository.findById(accountId)
                 .orElseThrow(() -> new RuntimeException("Account not found"));
+        account.setCustomer(customerRestClient.findCustomerById(account.getCustomerId()));
+        return account;
     }
 
     @GetMapping("/customer/{customerId}")
