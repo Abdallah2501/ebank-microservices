@@ -1,7 +1,6 @@
 package ma.emsi.ebank.ebankbot.web;
 
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,17 +11,8 @@ public class ChatRestController {
 
     private final ChatClient chatClient;
 
-    public ChatRestController(ChatClient.Builder builder, ChatMemory chatMemory) {
-        this.chatClient = builder
-                .defaultSystem("""
-                        Tu es EbankBot, l'assistant d'une banque en ligne.
-                        Tu aides uniquement pour les opérations bancaires : clients, comptes, soldes.
-                        Si la question n'a aucun rapport avec la banque, refuse poliment
-                        et rappelle ce que tu peux faire.
-                        Réponds dans la langue de l'utilisateur.
-                        """)
-                .defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
-                .build();
+    public ChatRestController(ChatClient chatClient) {
+        this.chatClient = chatClient;
     }
 
     @GetMapping("/chat")
