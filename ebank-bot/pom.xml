@@ -88,6 +88,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>net.dv8tion</groupId>
+                <artifactId>JDA</artifactId>
+                <version>5.6.1</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
