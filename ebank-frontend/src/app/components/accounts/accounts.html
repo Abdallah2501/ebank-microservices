@@ -1,0 +1,32 @@
+<h2>Comptes bancaires</h2>
+
+@if (state$ | async; as state) {
+  @if (state.error) {
+    <div class="error">{{ state.error }}</div>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Type</th>
+          <th>Solde</th>
+          <th>Créé le</th>
+          <th>Identifiant du compte</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (a of state.accounts; track a.accountId) {
+          <tr>
+            <td>{{ a.customer?.name ?? ('Client ' + a.customerId) }}</td>
+            <td>{{ a.type === 'CURRENT_ACCOUNT' ? 'Courant' : 'Épargne' }}</td>
+            <td>{{ a.balance | number: '1.2-2' }} {{ a.currency }}</td>
+            <td>{{ a.createdAt }}</td>
+            <td class="id">{{ a.accountId }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+} @else {
+  <p>Chargement...</p>
+}

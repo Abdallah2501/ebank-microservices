@@ -1,0 +1,28 @@
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 0.6rem 0.8rem;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background: #f3f4f6;
+}
+
+.id {
+  font-family: monospace;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.error {
+  padding: 1rem;
+  background: #fde8e8;
+  color: #b42318;
+  border-radius: 6px;
+}
