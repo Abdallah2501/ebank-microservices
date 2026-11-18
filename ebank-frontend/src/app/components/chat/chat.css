@@ -1,0 +1,85 @@
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 70vh;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: #fafafa;
+}
+
+.bubble {
+  max-width: 80%;
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  line-height: 1.45;
+}
+
+.bubble.user {
+  align-self: flex-end;
+  background: #2563eb;
+  color: white;
+}
+
+.bubble.bot {
+  align-self: flex-start;
+  background: white;
+  border: 1px solid #e5e7eb;
+}
+
+:host ::ng-deep .bubble.bot p {
+  margin: 0.3rem 0;
+}
+
+:host ::ng-deep .bubble.bot table {
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+}
+
+:host ::ng-deep .bubble.bot th,
+:host ::ng-deep .bubble.bot td {
+  border: 1px solid #ddd;
+  padding: 0.3rem 0.6rem;
+}
+
+.typing {
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.input-row {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.7rem;
+  border-top: 1px solid #ddd;
+}
+
+input {
+  flex: 1;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+button {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}

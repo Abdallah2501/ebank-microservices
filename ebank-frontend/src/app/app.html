@@ -2,5 +2,12 @@
 
 <main class="container">
   <h1>E-Bank</h1>
-  <app-accounts />
+
+  <nav>
+    <button [class.active]="tab() === 'accounts'" (click)="tab.set('accounts')">Comptes</button>
+    <button [class.active]="tab() === 'chat'" (click)="tab.set('chat')">Chatbot</button>
+  </nav>
+
+  <app-accounts [hidden]="tab() !== 'accounts'" />
+  <app-chat [hidden]="tab() !== 'chat'" />
 </main>

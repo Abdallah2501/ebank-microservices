@@ -1,0 +1,25 @@
+<div class="chat">
+  <div class="messages">
+    @for (m of messages(); track $index) {
+      @if (m.role === 'bot') {
+        <div class="bubble bot" [innerHTML]="render(m.text)"></div>
+      } @else {
+        <div class="bubble user">{{ m.text }}</div>
+      }
+    }
+    @if (sending()) {
+      <div class="typing">EbankBot écrit...</div>
+    }
+  </div>
+
+  <div class="input-row">
+    <input
+      type="text"
+      placeholder="Posez votre question..."
+      [value]="input()"
+      (input)="onInput($event)"
+      (keydown.enter)="send()"
+    />
+    <button (click)="send()" [disabled]="sending()">Envoyer</button>
+  </div>
+</div>
