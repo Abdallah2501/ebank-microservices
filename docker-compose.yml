@@ -1,0 +1,79 @@
+x-spring-env: &spring-env
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka
+  EUREKA_INSTANCE_PREFERIPADDRESS: "true"
+  SPRING_CONFIG_IMPORT: configserver:http://config-service:9999
+  JAVA_TOOL_OPTIONS: "-Xmx400m"
+
+services:
+  discovery-service:
+    build: ./discovery-service
+    ports:
+      - "8761:8761"
+    environment:
+      JAVA_TOOL_OPTIONS: "-Xmx300m"
+    restart: on-failure
+
+  config-service:
+    build: ./config-service
+    ports:
+      - "9999:9999"
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-service:8761/eureka
+      EUREKA_INSTANCE_PREFERIPADDRESS: "true"
+      JAVA_TOOL_OPTIONS: "-Xmx300m"
+    depends_on:
+      - discovery-service
+    restart: on-failure
+
+  customer-service:
+    build: ./customer-service
+    ports:
+      - "8081:8081"
+    environment:
+      <<: *spring-env
+    depends_on:
+      - config-service
+    restart: on-failure
+
+  ebank-service:
+    build: ./ebank-service
+    ports:
+      - "8082:8082"
+    environment:
+      <<: *spring-env
+    depends_on:
+      - config-service
+    restart: on-failure
+
+  gateway-service:
+    build: ./gateway-service
+    ports:
+      - "8888:8888"
+    environment:
+      <<: *spring-env
+    depends_on:
+      - config-service
+    restart: on-failure
+
+  ebank-bot:
+    build: ./ebank-bot
+    ports:
+      - "8083:8083"
+    environment:
+      <<: *spring-env
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN:-}
+      SPRING_AI_MCP_CLIENT_STREAMABLEHTTP_CONNECTIONS_CUSTOMER_URL: http://customer-service:8081
+      SPRING_AI_MCP_CLIENT_STREAMABLEHTTP_CONNECTIONS_EBANK_URL: http://ebank-service:8082
+    depends_on:
+      - customer-service
+      - ebank-service
+    restart: on-failure
+
+  ebank-frontend:
+    build: ./ebank-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - gateway-service

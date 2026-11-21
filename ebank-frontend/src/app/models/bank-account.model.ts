@@ -13,3 +13,9 @@ export interface BankAccount {
   customerId: number;
   customer: Customer | null;
 }
+export interface NewAccount {
+  customerId: number;
+  balance: number;
+  currency: string;
+  type: string;
+}

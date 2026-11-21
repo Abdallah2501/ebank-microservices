@@ -5,9 +5,11 @@
 
   <nav>
     <button [class.active]="tab() === 'accounts'" (click)="tab.set('accounts')">Comptes</button>
+    <button [class.active]="tab() === 'new'" (click)="tab.set('new')">Nouveau compte</button>
     <button [class.active]="tab() === 'chat'" (click)="tab.set('chat')">Chatbot</button>
   </nav>
 
   <app-accounts [hidden]="tab() !== 'accounts'" />
+  <app-new-account [hidden]="tab() !== 'new'" />
   <app-chat [hidden]="tab() !== 'chat'" />
 </main>

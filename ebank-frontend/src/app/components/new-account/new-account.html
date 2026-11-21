@@ -1,0 +1,46 @@
+<h2>Nouveau compte</h2>
+
+<form (submit)="submit($event)">
+  <label>
+    Identifiant du client
+    <input type="number" [formField]="accountForm.customerId" />
+  </label>
+  @if (accountForm.customerId().touched()) {
+    @for (e of accountForm.customerId().errors(); track $index) {
+      <small class="err">{{ e.message }}</small>
+    }
+  }
+
+  <label>
+    Solde initial
+    <input type="number" [formField]="accountForm.balance" />
+  </label>
+  @if (accountForm.balance().touched()) {
+    @for (e of accountForm.balance().errors(); track $index) {
+      <small class="err">{{ e.message }}</small>
+    }
+  }
+
+  <label>
+    Devise
+    <select [formField]="accountForm.currency">
+      <option value="MAD">MAD</option>
+      <option value="EUR">EUR</option>
+      <option value="USD">USD</option>
+    </select>
+  </label>
+
+  <label>
+    Type de compte
+    <select [formField]="accountForm.type">
+      <option value="CURRENT_ACCOUNT">Courant</option>
+      <option value="SAVING_ACCOUNT">Épargne</option>
+    </select>
+  </label>
+
+  <button type="submit" [disabled]="!accountForm().valid() || saving()">Créer le compte</button>
+</form>
+
+@if (message(); as m) {
+  <div class="msg" [class.ok]="m.ok" [class.ko]="!m.ok">{{ m.text }}</div>
+}
